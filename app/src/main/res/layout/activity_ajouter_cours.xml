@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#6200EE"
+        app:titleTextColor="@android:color/white" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gestion des cours"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
+    <Spinner
+        android:id="@+id/spinnerJour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/etMatiere"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Matière"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/etHeureDebut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Heure début (ex: 08:00)"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/etHeureFin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Heure fin (ex: 10:00)"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/etSalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Salle"
+        android:layout_marginBottom="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnAjouter"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Ajouter"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btnSupprimer"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Supprimer" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cours existants :"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCours"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>

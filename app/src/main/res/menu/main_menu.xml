@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_dashboard" android:title="Accueil" />
+        <item android:id="@+id/nav_etudiants" android:title="Étudiants" />
+        <item android:id="@+id/nav_presences" android:title="Prise de présence" />
+        <item android:id="@+id/nav_emploi" android:title="Emploi du temps" />
+        <item android:id="@+id/nav_ajouter_cours" android:title="Gérer les cours" />
+        <item android:id="@+id/nav_notifications" android:title="Activer notifications" />
+    </group>
+</menu>
