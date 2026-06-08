@@ -1,5 +1,5 @@
 [versions]
-agp = "9.2.0"
+agp = "9.2.1"
 appcompat = "1.6.1"
 material = "1.11.0"
 constraintlayout = "2.1.4"
@@ -13,6 +13,8 @@ glide = "4.16.0"
 junit = "4.13.2"
 ext-junit = "1.1.5"
 espresso = "3.5.1"
+fragment = "1.8.9"
+lombok = "1.18.34"
 
 [libraries]
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -36,6 +38,8 @@ compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

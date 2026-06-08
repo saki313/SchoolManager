@@ -12,11 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.schoolmanager.R; // ← CORRIGÉ
 import com.schoolmanager.data.database.AppDataBase;
 import com.schoolmanager.data.entity.Cours;
+import com.schoolmanager.viewmodel.CoursViewModel;
+
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -27,7 +30,7 @@ public class AjouterCoursActivity extends AppCompatActivity {
     private Button btnAjouter, btnSupprimer;
     private RecyclerView recyclerView;
     private CoursAdapter adapter;
-    private AppDataBase db;  // ← CORRIGÉ
+    private final CoursViewModel viewModel = new ViewModelProvider(this).get(CoursViewModel.class);
 
 
     private String jourSelectionne = "Lundi";
@@ -40,7 +43,6 @@ public class AjouterCoursActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ajouter_cours);
 
-        db = AppDataBase.getInstance(this);  // ← CORRIGÉ
 
         etHeureDebut = findViewById(R.id.etHeureDebut);
         etHeureFin = findViewById(R.id.etHeureFin);
@@ -75,7 +77,7 @@ public class AjouterCoursActivity extends AppCompatActivity {
 
     private void chargerCours() {
         Executors.newSingleThreadExecutor().execute(() -> {
-            List<Cours> coursList = db.coursDao().getByJour(jourSelectionne);
+            List<Cours> coursList = viewModel.getByJour(jourSelectionne);
             runOnUiThread(() -> {
                 if (adapter == null) {
                     adapter = new CoursAdapter(coursList, cours -> {
@@ -111,8 +113,7 @@ public class AjouterCoursActivity extends AppCompatActivity {
 
         if (coursSelectionne == null) {
             Cours nouveauCours = new Cours(jourSelectionne, heureDebut, heureFin, matiere, salle);
-            Executors.newSingleThreadExecutor().execute(() -> {
-                db.coursDao().insert(nouveauCours);
+            viewModel.insertCours(nouveauCours, () -> {
                 runOnUiThread(() -> {
                     Toast.makeText(this, "Cours ajouté", Toast.LENGTH_SHORT).show();
                     viderFormulaire();
@@ -124,8 +125,7 @@ public class AjouterCoursActivity extends AppCompatActivity {
             coursSelectionne.setHeureDebut(heureDebut);
             coursSelectionne.setHeureFin(heureFin);
             coursSelectionne.setSalle(salle);
-            Executors.newSingleThreadExecutor().execute(() -> {
-                db.coursDao().update(coursSelectionne);
+            viewModel.updateCours(coursSelectionne, () -> {
                 runOnUiThread(() -> {
                     Toast.makeText(this, "Cours modifié", Toast.LENGTH_SHORT).show();
                     viderFormulaire();
@@ -137,8 +137,7 @@ public class AjouterCoursActivity extends AppCompatActivity {
 
     private void supprimerCours() {
         if (coursSelectionne != null) {
-            Executors.newSingleThreadExecutor().execute(() -> {
-                db.coursDao().delete(coursSelectionne);
+                viewModel.deleteCours(coursSelectionne, () -> {
                 runOnUiThread(() -> {
                     Toast.makeText(this, "Cours supprimé", Toast.LENGTH_SHORT).show();
                     viderFormulaire();

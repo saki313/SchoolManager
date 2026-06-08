@@ -11,18 +11,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.schoolmanager.data.database.AppDataBase;
+import com.schoolmanager.data.entity.Cours;
 import com.schoolmanager.data.entity.Note;
+import com.schoolmanager.data.entity.NoteWithCours;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
-    private List<Note> notes = new ArrayList<>();
+    private List<NoteWithCours> notesWithCoursList = new ArrayList<>();
     private OnEditClickListener editListener;
     private OnDeleteClickListener deleteListener;
 
     public interface OnEditClickListener { void onEdit(Note note); }
     public interface OnDeleteClickListener { void onDelete(Note note); }
 
-    public void setNotes(List<Note> list) {
-        this.notes = list;
+    public void setNotes(List<NoteWithCours> list) {
+        this.notesWithCoursList = list;
         notifyDataSetChanged();
     }
 
@@ -37,8 +41,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Note note = notes.get(position);
-        holder.tvMatiere.setText(note.getMatiere());
+        NoteWithCours currentItem = notesWithCoursList.get(position);
+        // Récupérer le nom du cours via l'ID
+        Note note = currentItem.note;
+        Cours cours = currentItem.cours;
+
+        if (cours != null) {
+            holder.tvMatiere.setText(cours.getMatiere());
+        } else {
+            holder.tvMatiere.setText(note.getMatiere()); // Repli si le cours est nul
+        }
         holder.tvNote.setText(String.valueOf(note.getValeur()));
         if (note.getValeur() < 10)
             holder.tvNote.setTextColor(holder.itemView.getContext().getColor(R.color.red));
@@ -49,7 +61,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         holder.btnDelete.setOnClickListener(v -> { if (deleteListener != null) deleteListener.onDelete(note); });
     }
 
-    @Override public int getItemCount() { return notes.size(); }
+    @Override public int getItemCount() { return notesWithCoursList.size(); }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvMatiere, tvNote;

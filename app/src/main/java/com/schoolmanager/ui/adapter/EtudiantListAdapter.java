@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.schoolmanager.R;
 import com.schoolmanager.data.entity.Etudiant;
+import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +64,12 @@ public class EtudiantListAdapter extends RecyclerView.Adapter<EtudiantListAdapte
             holder.tvMoyenne.setText("Moyenne: --");
 
             if (etudiant.getPhotoPath() != null && !etudiant.getPhotoPath().isEmpty()) {
-                // Photo chargée plus tard
+                Glide.with(holder.itemView.getContext())
+                .load(etudiant.getPhotoPath())
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .error(android.R.drawable.ic_menu_gallery)
+                .fitCenter()
+                .into(holder.ivPhoto);
             } else {
                 holder.ivPhoto.setImageResource(android.R.drawable.ic_menu_gallery);
             }

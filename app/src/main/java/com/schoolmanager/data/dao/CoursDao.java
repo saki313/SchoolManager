@@ -31,4 +31,10 @@ public interface CoursDao {
 
     @Query("DELETE FROM cours")
     void deleteAll();
+
+    @Query("SELECT * FROM cours WHERE id = :coursId")
+    Cours getCoursById(int coursId);
+
+    @Query("SELECT * FROM cours")
+    List<Cours> getAllCoursSynchrone();
 }

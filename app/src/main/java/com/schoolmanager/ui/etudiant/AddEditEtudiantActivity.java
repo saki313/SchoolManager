@@ -1,6 +1,7 @@
 package com.schoolmanager.ui.etudiant;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,8 +13,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,13 +38,33 @@ public class AddEditEtudiantActivity extends AppCompatActivity {
     private static final int REQUEST_GALLERY = 101;
     private static final int PERMISSION_REQUEST = 200;
 
-    private EditText etNom, etPrenom, etMatricule;
+    private EditText etNom, etPrenom, etMatricule, etFiliere, etNiveau;
     private ImageView ivPhoto;
     private Button btnPrendrePhoto, btnChoisirPhoto, btnEnregistrer;
     private EtudiantViewModel viewModel;
     private int etudiantId = -1;
     private String currentPhotoPath = null;
     private Uri imageUri;
+    private ImageView imageViewProfil;
+    private final ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    imageUri = result.getData().getData();
+                    if (imageUri != null && ivPhoto != null) {
+                        try {
+                            // On récupère le Bitmap et on applique le traitement de sauvegarde local
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                            ivPhoto.setImageBitmap(bitmap);
+                            currentPhotoPath = sauvegarderPhoto(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(this, "Erreur lors du chargement de l'image", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +76,8 @@ public class AddEditEtudiantActivity extends AppCompatActivity {
         etNom = findViewById(R.id.etNom);
         etPrenom = findViewById(R.id.etPrenom);
         etMatricule = findViewById(R.id.etMatricule);
+        etFiliere = findViewById(R.id.etFiliere);
+        etNiveau = findViewById(R.id.etNiveau);
         ivPhoto = findViewById(R.id.ivPhoto);
         btnPrendrePhoto = findViewById(R.id.btnTakePhoto);
         btnChoisirPhoto = findViewById(R.id.btnChoisirPhoto);
@@ -65,6 +92,8 @@ public class AddEditEtudiantActivity extends AppCompatActivity {
                     etNom.setText(etudiant.getNom());
                     etPrenom.setText(etudiant.getPrenom());
                     etMatricule.setText(etudiant.getMatricule());
+                    etFiliere.setText(etudiant.getFiliere());
+                    etNiveau.setText(etudiant.getNiveau());
                     currentPhotoPath = etudiant.getPhotoPath();
                     if (currentPhotoPath != null) {
                         File imgFile = new File(currentPhotoPath);
@@ -111,7 +140,12 @@ public class AddEditEtudiantActivity extends AppCompatActivity {
 
     private void ouvrirGalerie() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, REQUEST_GALLERY);
+        galleryIntent.setType("image/*");
+        try {
+            galleryLauncher.launch(galleryIntent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Impossible d'ouvrir la galerie", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -138,16 +172,6 @@ public class AddEditEtudiantActivity extends AppCompatActivity {
                     e.printStackTrace();
                     Toast.makeText(this, "Erreur lors de la capture", Toast.LENGTH_SHORT).show();
                 }
-            } else if (requestCode == REQUEST_GALLERY && data != null && data.getData() != null) {
-                imageUri = data.getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                    ivPhoto.setImageBitmap(bitmap);
-                    currentPhotoPath = sauvegarderPhoto(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "Erreur lors du chargement", Toast.LENGTH_SHORT).show();
-                }
             }
         }
     }
@@ -169,13 +193,15 @@ public class AddEditEtudiantActivity extends AppCompatActivity {
         String nom = etNom.getText().toString().trim();
         String prenom = etPrenom.getText().toString().trim();
         String matricule = etMatricule.getText().toString().trim();
+        String filiere = etFiliere.getText().toString().trim();
+        String niveau = etNiveau.getText().toString().trim();
 
-        if (nom.isEmpty() || prenom.isEmpty() || matricule.isEmpty()) {
+        if (nom.isEmpty() || prenom.isEmpty() || matricule.isEmpty() || filiere.isEmpty() || niveau.isEmpty()) {
             Toast.makeText(this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Etudiant etudiant = new Etudiant(nom, prenom, matricule, currentPhotoPath);
+        Etudiant etudiant = new Etudiant(nom, prenom, matricule, filiere, niveau, currentPhotoPath);
 
         if (etudiantId == -1) {
             viewModel.insert(etudiant, () -> {

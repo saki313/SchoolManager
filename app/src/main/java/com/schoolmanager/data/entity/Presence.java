@@ -4,6 +4,15 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(tableName = "presence",
         foreignKeys = @ForeignKey(entity = Etudiant.class,
                 parentColumns = "id",
@@ -21,14 +30,4 @@ public class Presence {
         this.date = date;
         this.present = present;
     }
-
-    // Getters et setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public int getIdEtudiant() { return idEtudiant; }
-    public void setIdEtudiant(int idEtudiant) { this.idEtudiant = idEtudiant; }
-    public String getDate() { return date; }
-    public void setDate(String date) { this.date = date; }
-    public boolean isPresent() { return present; }
-    public void setPresent(boolean present) { this.present = present; }
 }

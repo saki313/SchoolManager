@@ -32,6 +32,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.fragment)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -39,6 +40,10 @@ dependencies {
     implementation (libs.androidx.appcompat.v161)
     implementation (libs.material.v1110)
     implementation (libs.androidx.constraintlayout.v214)
+
+    // Lombok
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
 
     // Room
     implementation ("androidx.room:room-runtime:2.6.1")

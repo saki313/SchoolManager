@@ -16,6 +16,7 @@ import com.schoolmanager.data.database.AppDataBase;
 import com.schoolmanager.data.entity.Cours;
 import com.schoolmanager.data.entity.Etudiant;
 import com.schoolmanager.data.entity.Note;
+import com.schoolmanager.data.entity.NoteWithCours;
 import com.schoolmanager.data.entity.Presence;
 
 /**
@@ -93,6 +94,10 @@ public class SchoolRepository {
         return noteDao.getNotesByEtudiant(idEtudiant);
     }
 
+    public LiveData<List<NoteWithCours>> getNotesWithCoursByEtudiant(int idEtudiant) {
+        return noteDao.getNotesWithCoursByEtudiant(idEtudiant);
+    }
+
     public LiveData<Double> getMoyenneByEtudiant(int idEtudiant) {
         return noteDao.getMoyenneByEtudiant(idEtudiant);
     }
@@ -131,8 +136,31 @@ public class SchoolRepository {
             if (callback != null) callback.run();
         });
     }
+    public void updateCours(Cours cours, Runnable callback) {
+        executor.execute(() -> {
+            coursDao.update(cours);
+            if (callback != null) callback.run();
+        });
+    }
+    public void deleteCours(Cours cours, Runnable callback) {
+        executor.execute(() -> {
+            coursDao.delete(cours);
+            if (callback != null) callback.run();
+        });
+    }
+    public List<Cours> getByJour(String jour) {
+        return coursDao.getByJour(jour);
+    }
 
     public LiveData<List<Cours>> getAllCours() {
         return coursDao.getAll();
+    }
+
+    public List<Cours> getAllCoursSynchrone() {
+        return coursDao.getAllCoursSynchrone();  // Synchrone pour Spinner
+    }
+
+    public Cours getCoursById(int coursId) {
+        return coursDao.getCoursById(coursId);
     }
 }

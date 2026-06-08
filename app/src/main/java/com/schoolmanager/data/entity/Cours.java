@@ -1,10 +1,17 @@
 package com.schoolmanager.data.entity;
 
-
-
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(tableName = "cours")
 public class Cours {
     @PrimaryKey(autoGenerate = true)
@@ -22,18 +29,4 @@ public class Cours {
         this.matiere = matiere;
         this.salle = salle;
     }
-
-    // Getters et setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getJour() { return jour; }
-    public void setJour(String jour) { this.jour = jour; }
-    public String getHeureDebut() { return heureDebut; }
-    public void setHeureDebut(String heureDebut) { this.heureDebut = heureDebut; }
-    public String getHeureFin() { return heureFin; }
-    public void setHeureFin(String heureFin) { this.heureFin = heureFin; }
-    public String getMatiere() { return matiere; }
-    public void setMatiere(String matiere) { this.matiere = matiere; }
-    public String getSalle() { return salle; }
-    public void setSalle(String salle) { this.salle = salle; }
 }

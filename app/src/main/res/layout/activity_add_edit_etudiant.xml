@@ -35,15 +35,29 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:src="@android:drawable/ic_menu_camera"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:background="@android:drawable/editbox_background" />
 
-                <Button
-                    android:id="@+id/btnTakePhoto"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Prendre photo"
-                    android:layout_marginTop="8dp" />
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/btnChoisirPhoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Choisir photo" />
+
+                    <Button
+                        android:id="@+id/btnTakePhoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Prendre photo"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -71,10 +85,30 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Matricule">
+                android:hint="INE">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etMatricule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Filière">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etFiliere"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Niveau">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNiveau"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -85,12 +119,6 @@
                 android:layout_height="wrap_content"
                 android:text="Enregistrer"
                 android:layout_marginTop="24dp" />
-            <Button
-                android:id="@+id/btnChoisirPhoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Choisir photo"
-                android:layout_marginTop="8dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

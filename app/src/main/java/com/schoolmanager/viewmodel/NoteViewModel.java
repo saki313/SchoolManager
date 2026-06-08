@@ -7,7 +7,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import java.util.List;
 
+import com.schoolmanager.data.entity.Cours;
 import com.schoolmanager.data.entity.Note;
+import com.schoolmanager.data.entity.NoteWithCours;
 import com.schoolmanager.data.repository.SchoolRepository;
 
 public class NoteViewModel extends AndroidViewModel {
@@ -22,8 +24,16 @@ public class NoteViewModel extends AndroidViewModel {
         return repository.getNotesByEtudiant(idEtudiant);
     }
 
+    public LiveData<List<NoteWithCours>> getNotesWithCoursByEtudiant(int idEtudiant) {
+        return repository.getNotesWithCoursByEtudiant(idEtudiant);
+    }
+
     public LiveData<Double> getMoyenneByEtudiant(int idEtudiant) {
         return repository.getMoyenneByEtudiant(idEtudiant);
+    }
+
+    public LiveData<List<Cours>> getAllCours() {
+        return repository.getAllCours();
     }
 
     public void insertNote(Note note, Runnable callback) { repository.insertNote(note, callback); }

@@ -25,4 +25,13 @@ public class CoursViewModel extends AndroidViewModel {
     public void insertCours(Cours cours, Runnable callback) {
         repository.insertCours(cours, callback);
     }
+    public void updateCours(Cours cours, Runnable callback) {
+        repository.updateCours(cours, callback);
+    }
+    public void deleteCours(Cours cours, Runnable callback) {
+        repository.deleteCours(cours, callback);
+    }
+    public List<Cours> getByJour(String jour) {
+        return repository.getByJour(jour);  // À implémenter dans Repository
+    }
 }
